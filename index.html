@@ -7,17 +7,13 @@
   <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
 </head>
 <body>
+  <img class="logo" src="/logo.svg" alt="Logo">
 <section id="publicSection">
-  Sector publico: <br>
+  <!-- Sector publico: <br> -->
   <button id="loginButton">Login</button>
 </section>
 <section id="privateSection">
-  Sector privado: <br>
-  <section id="menuSection">
-    <button id="profileButton">Profile</button>
-    <button id="playlistsButton">Mis playlists</button>
-    <button id="logoutButton">Logout</button>
-  </section>
+  <!-- Sector privado: <br> -->
   <section id="profileSection" >
     <h1>Display your Spotify profile data</h1>
     <h2>Logged in as <span id="displayName"></span></h2>
@@ -29,16 +25,23 @@
     </ul>
   </section>
   <section id="playlistsSection">
-    <p>Mis playlists:</p>
+    <!-- <p>Mis playlists:</p> -->
     <ul id="playlists"></ul>
   </section>
   <section id="actionsSection">
-    <p>Acciones comunes:</p>
-    <button id="changeButton">Cambiar track</button>
-    <button id="playButton">Play/Pause</button>
+    <!-- <p>Acciones comunes:</p> -->
+    <section id="spotifyEmbedSection">
+      <div id="embed-iframe"></div>
+    </section>
+    <section id="buttonContainer">
+      <button id="changeButton">Cambiar track</button>
+      <button id="playButton">Play/Pause</button>
+    </section>
   </section>
-  <section id="spotifyEmbedSection">
-    <div id="embed-iframe"></div>
+  <section id="menuSection">
+    <button id="profileButton">Profile</button>
+    <button id="playlistsButton">Mis playlists</button>
+    <button id="logoutButton">Logout</button>
   </section>
 </section>
 </body>

@@ -4,11 +4,11 @@
 
 /* hack, intencionalmente oculto, con display none no funciona */
 iframe {
-	top: 0;
+	/* top: 0;
 	width: 0;
 	height: 0;
 	position: absolute;
-	overflow: hidden;
+	overflow: hidden; */
 }
 
 :root {
@@ -39,7 +39,7 @@ body {
 	margin: 0;
 	display: flex;
 	flex-direction: column;
-	place-items: flex-start;
+	justify-content: space-between;
 	min-width: 320px;
 	min-height: 100vh;
 }
@@ -61,6 +61,7 @@ h1 {
 	padding: 1.5em;
 	will-change: filter;
 	transition: filter 300ms;
+	min-height: 10vh;
 }
 .logo:hover {
 	filter: drop-shadow(0 0 2em #646cffaa);
@@ -84,7 +85,7 @@ button {
 	font-size: 1em;
 	font-weight: 500;
 	font-family: inherit;
-	background-color: #1a1a1a;
+	background-color: inherit;
 	cursor: pointer;
 	transition: border-color 0.25s;
 }
@@ -94,6 +95,56 @@ button:hover {
 button:focus,
 button:focus-visible {
 	outline: 4px auto -webkit-focus-ring-color;
+}
+
+section#privateSection {
+	display: flex;
+	justify-content: space-between;
+}
+
+section#actionsSection {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	min-height: 10vh;
+	background-color: rgb(88, 88, 88);
+	box-sizing: border-box;
+}
+
+section#spotifyEmbedSection {
+	flex-grow: 1;
+	max-width: 70%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	overflow: hidden;
+	position: relative;
+}
+
+#embed-iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	border: none;
+}
+
+section#buttonContainer {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 1rem;
+	height: 100%;
+	max-width: 30%;
+}
+
+section#menuSection {
+	display: flex;
+	justify-content: space-around;
+	min-height: 10vh;
+	background-color: #1a1a1a;
 }
 
 @media (prefers-color-scheme: light) {
