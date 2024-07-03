@@ -1,7 +1,7 @@
 import { generateCodeChallenge, generateCodeVerifier } from "../utils";
 
-const apiAccount = 'https://accounts.spotify.com'
-const api = 'https://api.spotify.com'
+const apiAccount = "https://accounts.spotify.com";
+const api = "https://api.spotify.com";
 
 export async function redirectToProvider(): Promise<void> {
   const verifier = generateCodeVerifier(128);
@@ -22,7 +22,7 @@ export async function redirectToProvider(): Promise<void> {
 
 export async function getTokens(code: string): Promise<TokenResponse> {
   const verifier = localStorage.getItem("verifier");
-  if(!verifier){
+  if (!verifier) {
     throw new Error("Code verifier not found");
   }
   const params = new URLSearchParams();
@@ -36,19 +36,20 @@ export async function getTokens(code: string): Promise<TokenResponse> {
   const result = await fetch(`${apiAccount}/api/token`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: params
+    body: params,
   });
 
   const { access_token, refresh_token } = await result.json();
   return {
     access_token,
-    refresh_token
+    refresh_token,
   };
 }
 
 export async function getProfile(token: string): Promise<UserProfile> {
   const result = await fetch(`${api}/v1/me`, {
-    method: "GET", headers: { Authorization: `Bearer ${token}` }
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
   });
 
   return await result.json();
@@ -56,10 +57,24 @@ export async function getProfile(token: string): Promise<UserProfile> {
 
 export async function getMyPlaylists(token: string): Promise<PlaylistRequest> {
   const result = await fetch(`${api}/v1/me/playlists`, {
-    method: "GET", headers: { Authorization: `Bearer ${token}` }
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
   });
 
   return await result.json();
+}
+
+export async function getPlaylist(
+  token: string,
+  playlistId: string
+): Promise<PlaylistSong> {
+  const result = await fetch(`${api}/v1/playlists/${playlistId}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await result.json();
+  console.log(data);
+  return data;
 }
 
 // TODO agregar nuevas funciones para obtener playlists, canciones, etc

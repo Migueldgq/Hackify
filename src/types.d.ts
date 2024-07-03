@@ -1,14 +1,13 @@
-
 type UserProfile = {
   country: string;
   display_name: string;
   email: string;
   explicit_content: {
-    filter_enabled: boolean,
-    filter_locked: boolean
-  },
-  external_urls: { spotify: string; };
-  followers: { href: string; total: number; };
+    filter_enabled: boolean;
+    filter_locked: boolean;
+  };
+  external_urls: { spotify: string };
+  followers: { href: string; total: number };
   href: string;
   id: string;
   images: {
@@ -19,17 +18,22 @@ type UserProfile = {
   product: string;
   type: string;
   uri: string;
-}
+};
 
 type TokenResponse = {
   access_token: string;
   refresh_token: string;
-}
+};
 
 type Playlist = {
   name: string;
-}
+  id: string;
+};
 
 type PlaylistRequest = {
   items: Playlist[];
-}
+};
+
+type PlaylistSong = {
+  items: Song[];
+};
