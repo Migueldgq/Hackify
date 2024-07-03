@@ -102,7 +102,11 @@ section#privateSection {
 	justify-content: space-between;
 }
 
-section#actionsSection {
+.flexbutton {
+	display: flex;
+}
+
+/* section#actionsSection {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -138,7 +142,7 @@ section#buttonContainer {
 	gap: 1rem;
 	height: 100%;
 	max-width: 30%;
-}
+} */
 
 section#menuSection {
 	display: flex;
@@ -146,6 +150,15 @@ section#menuSection {
 	min-height: 10vh;
 	background-color: #1a1a1a;
 }
+
+.card {
+	height: 50%;
+	width: 50%;
+	border-radius: 25%;
+	/* bgc por js, crear array con colores y un random para cada tarjeta */
+
+}
+
 
 @media (prefers-color-scheme: light) {
 	:root {
