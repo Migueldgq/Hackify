@@ -106,6 +106,7 @@ function renderPlaylists(playlists: PlaylistRequest) {
       const token = localStorage.getItem("accessToken");
       const playlistId = this.getAttribute("data-id");
       if (playlistId && token) {
+        console.log(token);
         await getPlaylist(token, playlistId);
       } else {
         console.error("Token or Playlist ID is null");

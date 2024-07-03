@@ -77,4 +77,13 @@ export async function getPlaylist(
   return data;
 }
 
+export async function getCategories(token: string): Promise<PlaylistSong> {
+  const result = await fetch(`${api}/v1/browse/categories`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await result.json();
+  return data;
+}
+
 // TODO agregar nuevas funciones para obtener playlists, canciones, etc
