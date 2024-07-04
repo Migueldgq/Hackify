@@ -28,14 +28,24 @@ type TokenResponse = {
 type Playlist = {
   name: string;
   id: string;
+  images: { url: string }[];
+  owner: { display_name: string };
 };
 
 type PlaylistRequest = {
   items: Playlist[];
 };
 
-type PlaylistSong = {
-  items: Song[];
+type PlaylistSong = Song[];
+
+type Song = {
+  track: {
+    album: {
+      images: { url: string }[];
+    };
+    name: string;
+    artists: { name: string }[];
+  };
 };
 
 type CategoriesRequest = {
