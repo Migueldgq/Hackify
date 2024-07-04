@@ -1,45 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>My Spotify Profile</title>
-  <script src="src/main.ts" type="module"></script>
-  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
-</head>
-<body>
-<section id="publicSection">
-  Sector publico: <br>
-  <button id="loginButton">Login</button>
-</section>
-<section id="privateSection">
-  Sector privado: <br>
-  <section id="menuSection">
-    <button id="profileButton">Profile</button>
-    <button id="playlistsButton">Mis playlists</button>
-    <button id="logoutButton">Logout</button>
-  </section>
-  <section id="profileSection" >
-    <h1>Display your Spotify profile data</h1>
-    <h2>Logged in as <span id="displayName"></span></h2>
-    <ul>
-      <li>User ID: <span id="id"></span></li>
-      <li>Email: <span id="email"></span></li>
-      <li>Spotify URI: <a id="uri" href="#"></a></li>
-      <li>Link: <a id="url" href="#"></a></li>
-    </ul>
-  </section>
-  <section id="playlistsSection">
-    <p>Mis playlists:</p>
-    <ul id="playlists"></ul>
-  </section>
-  <section id="actionsSection">
-    <p>Acciones comunes:</p>
-    <button id="changeButton">Cambiar track</button>
-    <button id="playButton">Play/Pause</button>
-  </section>
-  <section id="spotifyEmbedSection">
-    <div id="embed-iframe"></div>
-  </section>
-</section>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Spotify Profile</title>
+    <script src="src/main.ts" type="module"></script>
+    <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.4.2/uicons-regular-rounded/css/uicons-regular-rounded.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.4.2/uicons-bold-rounded/css/uicons-bold-rounded.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn-uicons.flaticon.com/2.4.2/uicons-solid-straight/css/uicons-solid-straight.css"
+    />
+  </head>
+  <body>
+    <main>
+      <header class="header">
+        <img src="Logo.svg" class="logo" alt="" />
+      </header>
+
+      <div class="login-page">
+        <section id="publicSection">
+          <button id="loginButton">Login</button>
+        </section>
+      </div>
+
+      <div class="page-after-login">
+        <div class="menu-page">
+          <section id="privateSection">
+            <aside class="dropdown-menu">
+              <div class="dropdown-elements-container">
+                <img src="Logo.svg" class="dropdown-logo" alt="" />
+                <ul>
+                  <li>
+                    <div class="toggle-aside-option"></div>
+                    <a href="#" class="aside-options">
+                      <div class="aside-icons">
+                        <i class="fi fi-rr-heart"></i>
+                        My favorites
+                      </div>
+                      <div class="aside-arrow">
+                        <img src="chevronlefticon.svg" alt="" />
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="toggle-aside-option"></div>
+                    <a href="#" class="aside-options">
+                      <div class="aside-icons">
+                        <img src="personmusic.svg" alt="" />
+                        Home
+                      </div>
+                      <div class="aside-arrow">
+                        <img src="chevronlefticon.svg" alt="" />
+                      </div>
+                    </a>
+                  </li>
+                  <li>
+                    <div class="toggle-aside-option"></div>
+                    <a href="#" class="aside-options">
+                      <div class="aside-icons">
+                        <img src="playlists.svg" alt="" />
+                        Playlists
+                      </div>
+                      <div class="aside-arrow">
+                        <img src="chevronlefticon.svg" alt="" />
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </aside>
+            <div class="navigation">
+              <h1>Search</h1>
+
+              <nav>
+                <div class="search">
+                  <input
+                    type="text"
+                    name="buscador"
+                    id="buscador"
+                    class="input"
+                    placeholder="Artists, songs, or podcasts..."
+                  />
+                  <i class="fi fi-br-search search-icon"></i>
+                </div>
+              </nav>
+              <p>Your top genres</p>
+            </div>
+            <section id="menuSection">
+              <button id="profileButton">Profile</button>
+              <button id="playlistsButton">Mis playlists</button>
+              <button id="logoutButton">Logout</button>
+            </section>
+            <section id="profileSection">
+              <h1>Display your Spotify profile data</h1>
+              <h2>Logged in as <span id="displayName"></span></h2>
+              <ul>
+                <li>User ID: <span id="id"></span></li>
+                <li>Email: <span id="email"></span></li>
+                <li>Spotify URI: <a id="uri" href="#"></a></li>
+                <li>Link: <a id="url" href="#"></a></li>
+              </ul>
+            </section>
+            <section id="playlistsSection">
+              <p>Mis playlists:</p>
+              <ul id="playlists"></ul>
+            </section>
+            <section id="actionsSection">
+              <p>Acciones comunes:</p>
+              <button id="changeButton">Cambiar track</button>
+              <button id="playButton">Play/Pause</button>
+            </section>
+            <section id="spotifyEmbedSection">
+              <div id="embed-iframe"></div>
+            </section>
+            <footer>
+              <button class="flexbutton" id="menubutton">
+                <i class="fi fi-br-menu-burger"></i>
+                Menu
+              </button>
+              <button class="flexbutton" id="homebutton">
+                <i class="fi fi-ss-home"></i>
+                Home
+              </button>
+              <button class="flexbutton">
+                <i class="fi fi-br-search"></i>
+                Search
+              </button>
+              <button class="flexbutton">
+                <i class="fi fi-ss-list-music"></i>
+                Playlists
+              </button>
+            </footer>
+          </section>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>
