@@ -132,4 +132,14 @@ export async function getSearchTrack(
   return data;
 }
 
+export async function getUserTracks(token: string): Promise<UserTracksRequest> {
+  const result = await fetch(`${api}/v1/me/tracks?market=ES&limit=50`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await result.json();
+  const userTracks = data.items;
+  return userTracks;
+}
+
 // TODO agregar nuevas funciones para obtener playlists, canciones, etc

@@ -83,3 +83,24 @@ type TrackSearchRequest = {
     name: string;
   };
 };
+type UserTracksRequest = [
+  {
+    track: {
+      items: [
+        {
+          album: {
+            images: [
+              {
+                url: string;
+              }
+            ];
+            name: string;
+          };
+          artists: [name: string];
+        }
+      ];
+      duration_ms: number;
+      name: string;
+    };
+  }
+];
