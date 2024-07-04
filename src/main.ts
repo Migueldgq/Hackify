@@ -16,6 +16,9 @@ const playlistbutton = document.getElementById("playlistbutton");
 const headingtext = document.getElementById("heading-text");
 const footer = document.getElementById("footer");
 
+const dropdownMenu = document.querySelector(".dropdown-menu");
+
+
 async function init() {
   let profile: UserProfile | undefined;
   try {
@@ -58,10 +61,12 @@ function renderPrivateSection(isLogged: boolean) {
 
   homebutton.addEventListener("click", () => {
 
+    closeAside();
+
     clearDOM();
     
     renderActionsSection(isStillLogged());
-    
+
     headingtext.innerHTML = `
     <h1>Home</h1>
     `;
@@ -69,6 +74,8 @@ function renderPrivateSection(isLogged: boolean) {
   });
 
   searchbutton.addEventListener("click", () => {
+
+    closeAside();
     
     clearDOM();
 
@@ -80,6 +87,8 @@ function renderPrivateSection(isLogged: boolean) {
   });
 
   playlistbutton.addEventListener("click", () => {
+
+    closeAside();
     
     clearDOM();
 
@@ -174,6 +183,12 @@ function clearDOM() {
   actionsSection.style.display = "none";
   playlistsSection.style.display = "none";
   profileSection.style.display = "none";
+}
+
+function closeAside() {
+  if (dropdownMenu?.classList.contains("active")){
+    dropdownMenu.classList.remove("active");
+  };
 }
 
 document.addEventListener("DOMContentLoaded", () => {
