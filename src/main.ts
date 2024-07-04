@@ -1,7 +1,16 @@
 import "./main.css";
 import { init as authenticatorInit, login, logout } from "./auth";
-import { getMyPlaylists, initPlayer, playTrack, togglePlay } from "./api";
+import {
+  getMyPlaylists,
+  initPlayer,
+  playTrack,
+  togglePlay,
+  getPlaylist,
+  getCategories,
+  getPlaylistsCategory,
+} from "./api";
 import { isStillLogged } from "./tokenRefresh";
+
 
 const publicSection = document.getElementById("publicSection")!;
 const privateSection = document.getElementById("privateSection")!;
@@ -15,7 +24,6 @@ const searchbutton = document.getElementById("searchbutton");
 const playlistbutton = document.getElementById("playlistbutton");
 const headingtext = document.getElementById("heading-text");
 const footer = document.getElementById("footer");
-
 const dropdownMenu = document.querySelector(".dropdown-menu");
 
 
@@ -151,12 +159,68 @@ function renderPlaylists(playlists: PlaylistRequest) {
   }
   playlist.innerHTML = playlists.items
     .map((playlist) => {
-      return `<li>${playlist.name}</li>`;
+
+      return `<li data-id="${playlist.id}">${playlist.name}</li>`;
     })
     .join("");
+
+  Array.from(playlist.getElementsByTagName("li")).forEach((li) => {
+    li.addEventListener("click", async function () {
+      const token = localStorage.getItem("accessToken");
+      const playlistId = this.getAttribute("data-id");
+      if (playlistId && token) {
+        await getPlaylist(token, playlistId);
+      } else {
+        console.error("Token or Playlist ID is null");
+      }
+    });
+  });
 }
 
-function initActionsSection() {
+async function displayCategories() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    console.error("No access token found");
+    return;
+  }
+  try {
+    const categories = await getCategories(token);
+    const categoryList = document.getElementById("categoryList");
+    if (!categoryList) {
+      throw new Error("Category list element not found");
+    }
+
+    const categoryItems = categories.categories.items.map((category) => {
+      const li = document.createElement("li");
+      li.textContent = category.name;
+      li.setAttribute("data-id", category.id);
+      li.addEventListener("click", async function () {
+        const token = localStorage.getItem("accessToken");
+        const categoryId = this.getAttribute("data-id");
+        if (categoryId && token) {
+          console.log(token);
+          await getPlaylistsCategory(token, categoryId);
+        } else {
+          console.error("Token or Playlist ID is null");
+        }
+      });
+      return li;
+    });
+
+    categoryList.append(...categoryItems);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const privateSection = document.getElementById("privateSection");
+  if (privateSection) {
+    displayCategories();
+  }
+});
+
+function initActionsSection(): void {
+
   document.getElementById("changeButton")!.addEventListener("click", () => {
     playTrack("spotify:track:11dFghVXANMlKmJXsNCbNl"); // solo a modo de ejemplo
   });
@@ -169,6 +233,7 @@ function initActionsSection() {
 function renderActionsSection(render: boolean) {
   actionsSection.style.display = render ? "block" : "none";
 }
+
 
 function renderSearchSection(render: boolean) {
   navigation.style.display = render ? "block" : "none";
