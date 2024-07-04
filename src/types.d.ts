@@ -37,3 +37,19 @@ type PlaylistRequest = {
 type PlaylistSong = {
   items: Song[];
 };
+
+type CategoriesRequest = {
+  categories: {
+    items: Category[];
+  };
+};
+
+type Category = {
+  id: string;
+  name: string;
+  icons?: Icons[];
+};
+
+type Icons = {
+  url: string;
+};

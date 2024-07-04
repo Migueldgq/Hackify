@@ -6,6 +6,8 @@ import {
   playTrack,
   togglePlay,
   getPlaylist,
+  getCategories,
+  getPlaylistsCategory,
 } from "./api";
 
 const publicSection = document.getElementById("publicSection")!;
@@ -106,7 +108,6 @@ function renderPlaylists(playlists: PlaylistRequest) {
       const token = localStorage.getItem("accessToken");
       const playlistId = this.getAttribute("data-id");
       if (playlistId && token) {
-        console.log(token);
         await getPlaylist(token, playlistId);
       } else {
         console.error("Token or Playlist ID is null");
@@ -114,6 +115,48 @@ function renderPlaylists(playlists: PlaylistRequest) {
     });
   });
 }
+
+async function displayCategories() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    console.error("No access token found");
+    return;
+  }
+  try {
+    const categories = await getCategories(token);
+    const categoryList = document.getElementById("categoryList");
+    if (!categoryList) {
+      throw new Error("Category list element not found");
+    }
+
+    const categoryItems = categories.categories.items.map((category) => {
+      const li = document.createElement("li");
+      li.textContent = category.name;
+      li.setAttribute("data-id", category.id);
+      li.addEventListener("click", async function () {
+        const token = localStorage.getItem("accessToken");
+        const categoryId = this.getAttribute("data-id");
+        if (categoryId && token) {
+          console.log(token);
+          await getPlaylistsCategory(token, categoryId);
+        } else {
+          console.error("Token or Playlist ID is null");
+        }
+      });
+      return li;
+    });
+
+    categoryList.append(...categoryItems);
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+}
+document.addEventListener("DOMContentLoaded", () => {
+  const privateSection = document.getElementById("privateSection");
+  if (privateSection) {
+    displayCategories();
+  }
+});
 
 function initActionsSection(): void {
   document.getElementById("changeButton")!.addEventListener("click", () => {
@@ -124,6 +167,7 @@ function initActionsSection(): void {
   });
   renderActionsSection(true);
 }
+
 function renderActionsSection(render: boolean) {
   actionsSection.style.display = render ? "block" : "none";
 }

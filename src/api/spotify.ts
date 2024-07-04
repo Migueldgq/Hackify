@@ -74,14 +74,33 @@ export async function getPlaylist(
   });
   const data = await result.json();
   console.log(data);
+
   return data;
 }
 
-export async function getCategories(token: string): Promise<PlaylistSong> {
-  const result = await fetch(`${api}/v1/browse/categories`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
+export async function getCategories(token: string): Promise<CategoriesRequest> {
+  const result = await fetch(
+    `${api}/v1/browse/categories?locale=es_ES&limit=50`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  const data = await result.json();
+  return data;
+}
+
+export async function getPlaylistsCategory(
+  token: string,
+  categoryId: string
+): Promise<PlaylistRequest> {
+  const result = await fetch(
+    `${api}/v1/browse/categories/${categoryId}/playlists`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
   const data = await result.json();
   return data;
 }
