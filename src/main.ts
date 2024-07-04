@@ -36,7 +36,7 @@ function initPrivateSection(profile?: UserProfile): void {
   initMenuSection();
   initProfileSection(profile);
   initPlaylistSection(profile);
-  initActionsSection(!!profile);
+  initActionsSection();
 }
 // function renderPrivateSection(isLogged: boolean) {
 //   privateSection.style.display = isLogged ? "block" : "none";
