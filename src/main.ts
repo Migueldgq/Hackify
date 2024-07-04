@@ -124,7 +124,7 @@ function renderPlaylists(playlists: PlaylistRequest) {
     .join("");
 }
 
-function initActionsSection(isLogged: boolean): void {
+function initActionsSection() {
   document.getElementById("changeButton")!.addEventListener("click", () => {
     playTrack("spotify:track:11dFghVXANMlKmJXsNCbNl"); // solo a modo de ejemplo
   });
