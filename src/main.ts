@@ -9,12 +9,23 @@ import {
   getCategories,
   getPlaylistsCategory,
 } from "./api";
+import { isStillLogged } from "./tokenRefresh";
+
 
 const publicSection = document.getElementById("publicSection")!;
 const privateSection = document.getElementById("privateSection")!;
 const profileSection = document.getElementById("profileSection")!;
 const playlistsSection = document.getElementById("playlistsSection")!;
 const actionsSection = document.getElementById("actionsSection")!;
+
+const navigation = document.querySelector(".navigation") as HTMLElement;
+const homebutton = document.getElementById("homebutton");
+const searchbutton = document.getElementById("searchbutton");
+const playlistbutton = document.getElementById("playlistbutton");
+const headingtext = document.getElementById("heading-text");
+const footer = document.getElementById("footer");
+const dropdownMenu = document.querySelector(".dropdown-menu");
+
 
 async function init() {
   let profile: UserProfile | undefined;
@@ -44,8 +55,57 @@ function initPrivateSection(profile?: UserProfile): void {
   initPlaylistSection(profile);
   initActionsSection();
 }
+// function renderPrivateSection(isLogged: boolean) {
+//   privateSection.style.display = isLogged ? "block" : "none";
+
+// }
+
 function renderPrivateSection(isLogged: boolean) {
+
+  if (!homebutton || !searchbutton || !playlistbutton || !headingtext || !footer ) return;
+
   privateSection.style.display = isLogged ? "block" : "none";
+  footer.style.display = isLogged ? "flex" : "none";
+
+  homebutton.addEventListener("click", () => {
+
+    closeAside();
+
+    clearDOM();
+    
+    renderActionsSection(isStillLogged());
+
+    headingtext.innerHTML = `
+    <h1>Home</h1>
+    `;
+
+  });
+
+  searchbutton.addEventListener("click", () => {
+
+    closeAside();
+    
+    clearDOM();
+
+    renderSearchSection(isStillLogged());
+    
+    headingtext.innerHTML = `
+    <h1>Search</h1>
+    `;
+  });
+
+  playlistbutton.addEventListener("click", () => {
+
+    closeAside();
+    
+    clearDOM();
+
+    renderPlaylistSection(isStillLogged());
+    
+    headingtext.innerHTML = `
+    <h1>Mis playlists</h1>
+    `;
+  })
 }
 
 function initMenuSection(): void {
@@ -99,6 +159,7 @@ function renderPlaylists(playlists: PlaylistRequest) {
   }
   playlist.innerHTML = playlists.items
     .map((playlist) => {
+
       return `<li data-id="${playlist.id}">${playlist.name}</li>`;
     })
     .join("");
@@ -159,17 +220,74 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initActionsSection(): void {
+
   document.getElementById("changeButton")!.addEventListener("click", () => {
     playTrack("spotify:track:11dFghVXANMlKmJXsNCbNl"); // solo a modo de ejemplo
   });
   document.getElementById("playButton")!.addEventListener("click", () => {
     togglePlay();
   });
-  renderActionsSection(true);
-}
 
+  renderActionsSection(false);
+}
 function renderActionsSection(render: boolean) {
   actionsSection.style.display = render ? "block" : "none";
 }
+
+
+function renderSearchSection(render: boolean) {
+  navigation.style.display = render ? "block" : "none";
+}
+
+function renderPlaylistSection (render: boolean) {
+  playlistsSection.style.display = render ? "block" : "none";
+}
+
+function clearDOM() {
+  navigation.style.display = "none";
+  actionsSection.style.display = "none";
+  playlistsSection.style.display = "none";
+  profileSection.style.display = "none";
+}
+
+function closeAside() {
+  if (dropdownMenu?.classList.contains("active")){
+    dropdownMenu.classList.remove("active");
+  };
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const toggleButton = document.getElementById("menubutton");
+  const asideOptions = document.querySelectorAll(".aside-options");
+  const dropdownMenu = document.querySelector(".dropdown-menu");
+
+  if (toggleButton && dropdownMenu) {
+    toggleButton.addEventListener("click", () => {
+      dropdownMenu.classList.toggle("active");
+      // Al cerrar el aside, ocultar todos los rectángulos amarillos
+      if (!dropdownMenu.classList.contains("active")) {
+        document
+          .querySelectorAll(".toggle-aside-option")
+          .forEach((el) => el.classList.remove("active"));
+      }
+    });
+  }
+
+  asideOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      // Primero, desactivar cualquier .toggle-aside-option activo
+      document
+        .querySelectorAll(".toggle-aside-option")
+        .forEach((el) => el.classList.remove("active"));
+
+      // Activar el toggle-aside-option correspondiente
+      const toggleAsideOption = option.previousElementSibling as HTMLElement;
+      if (toggleAsideOption) {
+        toggleAsideOption.classList.toggle("active");
+        console.log("Seleccionado");
+      }
+    });
+  });
+});
 
 document.addEventListener("DOMContentLoaded", init);
