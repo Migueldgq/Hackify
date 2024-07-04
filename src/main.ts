@@ -45,27 +45,63 @@ function initPrivateSection(profile?: UserProfile): void {
 
 function renderPrivateSection(isLogged: boolean) {
   const homebutton = document.getElementById("homebutton");
+
+  const searchbutton = document.getElementById("searchbutton");
+
+  const playlistbutton = document.getElementById("playlistbutton")
+
+  const headingtext = document.getElementById("heading-text");
+
+  const footer = document.getElementById("footer");
   if (!homebutton) return;
+  if (!searchbutton) return;
+  if (!playlistbutton) return;
+  if (!headingtext) return;
+  if (!footer) return;
 
   privateSection.style.display = isLogged ? "block" : "none";
 
+  footer.style.display = isLogged ? "flex" : "none";
+
   homebutton.addEventListener("click", () => {
-    // Alternar entre 'block' y 'none'
 
     isStillLogged();
 
     privateSection.style.display = "block";
 
-    console.log(isStillLogged());
-
     renderActionsSection(isStillLogged());
-
-    console.log(privateSection.style.display);
 
     navigation.style.display = "none";
 
-    console.log("funcionando");
+    headingtext.innerHTML = `
+    <h1>Home</h1>
+    `;
+
   });
+
+  searchbutton.addEventListener("click", () => {
+    
+    isStillLogged();
+    
+    navigation.style.display = "flex";
+    actionsSection.style.display = "none";
+    
+    headingtext.innerHTML = `
+    <h1>Search</h1>
+    `;
+  });
+
+  playlistbutton.addEventListener("click", () => {
+    
+    isStillLogged();
+    
+    navigation.style.display = "none";
+    actionsSection.style.display = "none";
+    
+    headingtext.innerHTML = `
+    <h1>Mis playlists</h1>
+    `;
+  })
 }
 
 function initMenuSection(): void {

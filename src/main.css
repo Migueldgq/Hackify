@@ -1,6 +1,7 @@
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 #publicSection,
@@ -41,8 +42,12 @@ body {
 }
 
 .navigation {
-  display: flex;
+  display: none;
   flex-direction: column;
+}
+
+.powericon {
+  filter: invert(1);
 }
 
 main {
@@ -267,11 +272,15 @@ button:focus-visible {
 } */
 
 footer {
-  display: flex;
+  display: none;
   flex-grow: 1;
   bottom: 0;
   position: fixed;
   background-color: #1a1a1a;
+}
+
+li button#logoutButton {
+  background-color: inherit;
 }
 
 /* section#actionsSection {
