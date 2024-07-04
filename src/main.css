@@ -1,6 +1,7 @@
 * {
   padding: 0;
   margin: 0;
+  box-sizing: border-box;
 }
 
 #publicSection,
@@ -38,20 +39,40 @@ iframe {
 
 body {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+}
+
+header {
+  height: 15vh;
+}
+
+h1 {
+  margin: auto 2rem;
 }
 
 .navigation {
-  display: flex;
+  display: none;
   flex-direction: column;
+  margin: auto 2rem;
+  width: 80%;
+}
+
+.search {
+  display: flex;
+}
+
+.powericon {
+  filter: invert(1);
 }
 
 main {
   display: flex;
   margin: auto 1rem;
   flex-direction: column;
-  place-items: flex-start;
   width: 100%;
-  min-height: 100vh;
+  height: 75vh;
 }
 
 h1 {
@@ -64,12 +85,6 @@ p {
   font-size: 0.9rem;
   line-height: 1.1;
   margin-top: 0.8rem;
-}
-
-.header {
-  width: 100%;
-  display: flex;
-  justify-content: center;
 }
 
 .input {
@@ -104,7 +119,7 @@ p {
 .search-icon {
   color: rgb(0, 0, 0);
   position: relative;
-  right: 16.2rem;
+  right: 15.5rem;
   font-size: 0.8rem;
   font-weight: 900;
 }
@@ -221,7 +236,7 @@ ul > li {
 }
 
 .logo {
-  height: 2rem;
+  height: 90%;
   padding: 1rem;
   will-change: filter;
   transition: filter 300ms;
@@ -267,11 +282,16 @@ button:focus-visible {
 } */
 
 footer {
-  display: flex;
+  display: none;
   flex-grow: 1;
   bottom: 0;
   position: fixed;
   background-color: #1a1a1a;
+  height: 10vh;
+}
+
+li button#logoutButton {
+  background-color: inherit;
 }
 
 /* section#actionsSection {

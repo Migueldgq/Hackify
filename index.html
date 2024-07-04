@@ -20,10 +20,10 @@
     />
   </head>
   <body>
+    <header class="header">
+      <img src="Logo.svg" class="logo" alt="" />
+    </header>
     <main>
-      <header class="header">
-        <img src="Logo.svg" class="logo" alt="" />
-      </header>
 
       <div class="login-page">
         <section id="publicSection">
@@ -42,7 +42,7 @@
                     <div class="toggle-aside-option"></div>
                     <a href="#" class="aside-options">
                       <div class="aside-icons">
-                        <i class="fi fi-rr-heart"></i>
+                        <i  class="fi fi-rr-heart"></i>
                         My favorites
                       </div>
                       <div class="aside-arrow">
@@ -74,12 +74,20 @@
                       </div>
                     </a>
                   </li>
+                  <li>
+                    <div class="toggle-aside-option"></div>
+                    <button id="logoutButton" class="aside-options">
+                      <div class="aside-icons">
+                        <img class="powericon" src="power.svg" alt="" />
+                        Logout
+                      </div>
+                    </button>
+                  </li>                  
                 </ul>
               </div>
             </aside>
+            <div id="heading-text"></div>
             <div class="navigation">
-              <h1>Search</h1>
-
               <nav>
                 <div class="search">
                   <input
@@ -92,7 +100,6 @@
                   <i class="fi fi-br-search search-icon"></i>
                 </div>
               </nav>
-              <p>Your top genres</p>
             </div>
             <section id="menuSection">
               <button id="profileButton">Profile</button>
@@ -110,38 +117,36 @@
               </ul>
             </section>
             <section id="playlistsSection">
-              <p>Mis playlists:</p>
               <ul id="playlists"></ul>
             </section>
             <section id="actionsSection">
-              <p>Acciones comunes:</p>
               <button id="changeButton">Cambiar track</button>
               <button id="playButton">Play/Pause</button>
             </section>
             <section id="spotifyEmbedSection">
               <div id="embed-iframe"></div>
             </section>
-            <footer>
-              <button class="flexbutton" id="menubutton">
-                <i class="fi fi-br-menu-burger"></i>
-                Menu
-              </button>
-              <button class="flexbutton" id="homebutton">
-                <i class="fi fi-ss-home"></i>
-                Home
-              </button>
-              <button class="flexbutton">
-                <i class="fi fi-br-search"></i>
-                Search
-              </button>
-              <button class="flexbutton">
-                <i class="fi fi-ss-list-music"></i>
-                Playlists
-              </button>
-            </footer>
           </section>
         </div>
       </div>
     </main>
+    <footer id="footer">
+      <button class="flexbutton" id="menubutton">
+        <i class="fi fi-br-menu-burger"></i>
+        Menu
+      </button>
+      <button class="flexbutton" id="homebutton">
+        <i class="fi fi-ss-home"></i>
+        Home
+      </button>
+      <button class="flexbutton" id="searchbutton">
+        <i class="fi fi-br-search"></i>
+        Search
+      </button>
+      <button class="flexbutton" id="playlistbutton">
+        <i class="fi fi-ss-list-music"></i>
+        Playlists
+      </button>
+    </footer>
   </body>
 </html>

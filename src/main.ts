@@ -8,7 +8,16 @@ const privateSection = document.getElementById("privateSection")!;
 const profileSection = document.getElementById("profileSection")!;
 const playlistsSection = document.getElementById("playlistsSection")!;
 const actionsSection = document.getElementById("actionsSection")!;
+
 const navigation = document.querySelector(".navigation") as HTMLElement;
+const homebutton = document.getElementById("homebutton");
+const searchbutton = document.getElementById("searchbutton");
+const playlistbutton = document.getElementById("playlistbutton");
+const headingtext = document.getElementById("heading-text");
+const footer = document.getElementById("footer");
+
+const dropdownMenu = document.querySelector(".dropdown-menu");
+
 
 async function init() {
   let profile: UserProfile | undefined;
@@ -44,28 +53,51 @@ function initPrivateSection(profile?: UserProfile): void {
 // }
 
 function renderPrivateSection(isLogged: boolean) {
-  const homebutton = document.getElementById("homebutton");
-  if (!homebutton) return;
+
+  if (!homebutton || !searchbutton || !playlistbutton || !headingtext || !footer ) return;
 
   privateSection.style.display = isLogged ? "block" : "none";
+  footer.style.display = isLogged ? "flex" : "none";
 
   homebutton.addEventListener("click", () => {
-    // Alternar entre 'block' y 'none'
 
-    isStillLogged();
+    closeAside();
 
-    privateSection.style.display = "block";
-
-    console.log(isStillLogged());
-
+    clearDOM();
+    
     renderActionsSection(isStillLogged());
 
-    console.log(privateSection.style.display);
+    headingtext.innerHTML = `
+    <h1>Home</h1>
+    `;
 
-    navigation.style.display = "none";
-
-    console.log("funcionando");
   });
+
+  searchbutton.addEventListener("click", () => {
+
+    closeAside();
+    
+    clearDOM();
+
+    renderSearchSection(isStillLogged());
+    
+    headingtext.innerHTML = `
+    <h1>Search</h1>
+    `;
+  });
+
+  playlistbutton.addEventListener("click", () => {
+
+    closeAside();
+    
+    clearDOM();
+
+    renderPlaylistSection(isStillLogged());
+    
+    headingtext.innerHTML = `
+    <h1>Mis playlists</h1>
+    `;
+  })
 }
 
 function initMenuSection(): void {
@@ -136,6 +168,27 @@ function initActionsSection() {
 }
 function renderActionsSection(render: boolean) {
   actionsSection.style.display = render ? "block" : "none";
+}
+
+function renderSearchSection(render: boolean) {
+  navigation.style.display = render ? "block" : "none";
+}
+
+function renderPlaylistSection (render: boolean) {
+  playlistsSection.style.display = render ? "block" : "none";
+}
+
+function clearDOM() {
+  navigation.style.display = "none";
+  actionsSection.style.display = "none";
+  playlistsSection.style.display = "none";
+  profileSection.style.display = "none";
+}
+
+function closeAside() {
+  if (dropdownMenu?.classList.contains("active")){
+    dropdownMenu.classList.remove("active");
+  };
 }
 
 document.addEventListener("DOMContentLoaded", () => {
