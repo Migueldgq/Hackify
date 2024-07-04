@@ -61,7 +61,11 @@ export async function getMyPlaylists(token: string): Promise<PlaylistRequest> {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return await result.json();
+  const data = await result.json();
+
+  console.log(data);
+
+  return data;
 }
 
 export async function getPlaylist(
@@ -73,9 +77,11 @@ export async function getPlaylist(
     headers: { Authorization: `Bearer ${token}` },
   });
   const data = await result.json();
-  console.log(data);
+  const tracks = data.tracks.items;
 
-  return data;
+  console.log(tracks);
+
+  return tracks;
 }
 
 export async function getCategories(token: string): Promise<CategoriesRequest> {
