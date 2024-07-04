@@ -255,8 +255,6 @@ function renderPlaylistsTracks(songs: PlaylistSong, playlistName: string) {
       </li>`;
     })
     .join("");
-
-  
 }
 
 async function displayCategories() {
@@ -317,10 +315,6 @@ function renderActionsSection(render: boolean) {
 
 function renderSearchSection(render: boolean) {
   navigation.style.display = render ? "block" : "none";
-}
-
-function renderPlaylistSection(render: boolean) {
-  playlistsSection.style.display = render ? "block" : "none";
 }
 
 function clearDOM() {
