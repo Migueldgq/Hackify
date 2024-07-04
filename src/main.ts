@@ -24,7 +24,10 @@ const searchbutton = document.getElementById("searchbutton");
 const playlistbutton = document.getElementById("playlistbutton");
 const headingtext = document.getElementById("heading-text");
 const footer = document.getElementById("footer");
+const toggleButton = document.getElementById("menubutton");
 const dropdownMenu = document.querySelector(".dropdown-menu");
+const profileasidebutton = document.getElementById("profileasidebutton");
+const myfavasidebutton = document.getElementById("myfavasidebutton");
 
 
 async function init() {
@@ -60,9 +63,9 @@ function initPrivateSection(profile?: UserProfile): void {
 
 // }
 
-function renderPrivateSection(isLogged: boolean) {
+function renderPrivateSection(isLogged: boolean, profile?: UserProfile): void {
 
-  if (!homebutton || !searchbutton || !playlistbutton || !headingtext || !footer ) return;
+  if (!homebutton || !searchbutton || !playlistbutton || !headingtext || !footer || !profileasidebutton || !myfavasidebutton) return;
 
   privateSection.style.display = isLogged ? "block" : "none";
   footer.style.display = isLogged ? "flex" : "none";
@@ -106,6 +109,37 @@ function renderPrivateSection(isLogged: boolean) {
     <h1>Mis playlists</h1>
     `;
   })
+
+  profileasidebutton.addEventListener("click", () => {
+
+    closeAside();
+    
+    clearDOM();
+
+    renderProfileSection(!!profile);
+    
+    if (profile) {
+      renderProfileData(profile);
+    }
+    
+    headingtext.innerHTML = `
+    <h1>Profile</h1>
+
+    `;
+
+  });
+
+  myfavasidebutton.addEventListener("click", () => {
+
+    closeAside();
+    
+    clearDOM(); 
+
+    headingtext.innerHTML = `
+    <h1>Mis favoritos</h1>
+    `;
+
+  });
 }
 
 function initMenuSection(): void {
@@ -243,23 +277,30 @@ function renderPlaylistSection (render: boolean) {
   playlistsSection.style.display = render ? "block" : "none";
 }
 
+
 function clearDOM() {
   navigation.style.display = "none";
   actionsSection.style.display = "none";
   playlistsSection.style.display = "none";
   profileSection.style.display = "none";
+
 }
 
 function closeAside() {
   if (dropdownMenu?.classList.contains("active")){
     dropdownMenu.classList.remove("active");
   };
+
+  if (!dropdownMenu?.classList.contains("active")) {
+    document
+      .querySelectorAll(".toggle-aside-option")
+      .forEach((el) => el.classList.remove("active"));
+  }
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleButton = document.getElementById("menubutton");
   const asideOptions = document.querySelectorAll(".aside-options");
-  const dropdownMenu = document.querySelector(".dropdown-menu");
 
   if (toggleButton && dropdownMenu) {
     toggleButton.addEventListener("click", () => {

@@ -195,6 +195,7 @@ ul > li {
   text-decoration: none;
   color: inherit;
   justify-content: space-between;
+  background-color: inherit;
 }
 
 .aside-icons {
@@ -288,10 +289,6 @@ footer {
   position: fixed;
   background-color: #1a1a1a;
   height: 10vh;
-}
-
-li button#logoutButton {
-  background-color: inherit;
 }
 
 /* section#actionsSection {
