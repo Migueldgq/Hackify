@@ -8,7 +8,13 @@ const privateSection = document.getElementById("privateSection")!;
 const profileSection = document.getElementById("profileSection")!;
 const playlistsSection = document.getElementById("playlistsSection")!;
 const actionsSection = document.getElementById("actionsSection")!;
+
 const navigation = document.querySelector(".navigation") as HTMLElement;
+const homebutton = document.getElementById("homebutton");
+const searchbutton = document.getElementById("searchbutton");
+const playlistbutton = document.getElementById("playlistbutton");
+const headingtext = document.getElementById("heading-text");
+const footer = document.getElementById("footer");
 
 async function init() {
   let profile: UserProfile | undefined;
@@ -44,35 +50,18 @@ function initPrivateSection(profile?: UserProfile): void {
 // }
 
 function renderPrivateSection(isLogged: boolean) {
-  const homebutton = document.getElementById("homebutton");
 
-  const searchbutton = document.getElementById("searchbutton");
-
-  const playlistbutton = document.getElementById("playlistbutton")
-
-  const headingtext = document.getElementById("heading-text");
-
-  const footer = document.getElementById("footer");
-  if (!homebutton) return;
-  if (!searchbutton) return;
-  if (!playlistbutton) return;
-  if (!headingtext) return;
-  if (!footer) return;
+  if (!homebutton || !searchbutton || !playlistbutton || !headingtext || !footer ) return;
 
   privateSection.style.display = isLogged ? "block" : "none";
-
   footer.style.display = isLogged ? "flex" : "none";
 
   homebutton.addEventListener("click", () => {
 
-    isStillLogged();
-
-    privateSection.style.display = "block";
-
+    clearDOM();
+    
     renderActionsSection(isStillLogged());
-
-    navigation.style.display = "none";
-
+    
     headingtext.innerHTML = `
     <h1>Home</h1>
     `;
@@ -81,10 +70,9 @@ function renderPrivateSection(isLogged: boolean) {
 
   searchbutton.addEventListener("click", () => {
     
-    isStillLogged();
-    
-    navigation.style.display = "flex";
-    actionsSection.style.display = "none";
+    clearDOM();
+
+    renderSearchSection(isStillLogged());
     
     headingtext.innerHTML = `
     <h1>Search</h1>
@@ -93,10 +81,9 @@ function renderPrivateSection(isLogged: boolean) {
 
   playlistbutton.addEventListener("click", () => {
     
-    isStillLogged();
-    
-    navigation.style.display = "none";
-    actionsSection.style.display = "none";
+    clearDOM();
+
+    renderPlaylistSection(isStillLogged());
     
     headingtext.innerHTML = `
     <h1>Mis playlists</h1>
@@ -172,6 +159,21 @@ function initActionsSection() {
 }
 function renderActionsSection(render: boolean) {
   actionsSection.style.display = render ? "block" : "none";
+}
+
+function renderSearchSection(render: boolean) {
+  navigation.style.display = render ? "block" : "none";
+}
+
+function renderPlaylistSection (render: boolean) {
+  playlistsSection.style.display = render ? "block" : "none";
+}
+
+function clearDOM() {
+  navigation.style.display = "none";
+  actionsSection.style.display = "none";
+  playlistsSection.style.display = "none";
+  profileSection.style.display = "none";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
