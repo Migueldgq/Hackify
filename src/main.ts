@@ -11,7 +11,6 @@ import {
 } from "./api";
 import { isStillLogged } from "./tokenRefresh";
 
-
 const publicSection = document.getElementById("publicSection")!;
 const privateSection = document.getElementById("privateSection")!;
 const profileSection = document.getElementById("profileSection")!;
@@ -25,7 +24,6 @@ const playlistbutton = document.getElementById("playlistbutton");
 const headingtext = document.getElementById("heading-text");
 const footer = document.getElementById("footer");
 const dropdownMenu = document.querySelector(".dropdown-menu");
-
 
 async function init() {
   let profile: UserProfile | undefined;
@@ -61,51 +59,53 @@ function initPrivateSection(profile?: UserProfile): void {
 // }
 
 function renderPrivateSection(isLogged: boolean) {
-
-  if (!homebutton || !searchbutton || !playlistbutton || !headingtext || !footer ) return;
+  if (
+    !homebutton ||
+    !searchbutton ||
+    !playlistbutton ||
+    !headingtext ||
+    !footer
+  )
+    return;
 
   privateSection.style.display = isLogged ? "block" : "none";
   footer.style.display = isLogged ? "flex" : "none";
 
   homebutton.addEventListener("click", () => {
-
     closeAside();
 
     clearDOM();
-    
+
     renderActionsSection(isStillLogged());
 
     headingtext.innerHTML = `
     <h1>Home</h1>
     `;
-
   });
 
   searchbutton.addEventListener("click", () => {
-
     closeAside();
-    
+
     clearDOM();
 
     renderSearchSection(isStillLogged());
-    
+
     headingtext.innerHTML = `
     <h1>Search</h1>
     `;
   });
 
   playlistbutton.addEventListener("click", () => {
-
     closeAside();
-    
+
     clearDOM();
 
     renderPlaylistSection(isStillLogged());
-    
+
     headingtext.innerHTML = `
     <h1>Mis playlists</h1>
     `;
-  })
+  });
 }
 
 function initMenuSection(): void {
@@ -159,7 +159,6 @@ function renderPlaylists(playlists: PlaylistRequest) {
   }
   playlist.innerHTML = playlists.items
     .map((playlist) => {
-
       return `<li data-id="${playlist.id}">${playlist.name}</li>`;
     })
     .join("");
@@ -167,6 +166,7 @@ function renderPlaylists(playlists: PlaylistRequest) {
   Array.from(playlist.getElementsByTagName("li")).forEach((li) => {
     li.addEventListener("click", async function () {
       const token = localStorage.getItem("accessToken");
+      console.log(token);
       const playlistId = this.getAttribute("data-id");
       if (playlistId && token) {
         await getPlaylist(token, playlistId);
@@ -198,7 +198,6 @@ async function displayCategories() {
         const token = localStorage.getItem("accessToken");
         const categoryId = this.getAttribute("data-id");
         if (categoryId && token) {
-          console.log(token);
           await getPlaylistsCategory(token, categoryId);
         } else {
           console.error("Token or Playlist ID is null");
@@ -220,7 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function initActionsSection(): void {
-
   document.getElementById("changeButton")!.addEventListener("click", () => {
     playTrack("spotify:track:11dFghVXANMlKmJXsNCbNl"); // solo a modo de ejemplo
   });
@@ -234,12 +232,11 @@ function renderActionsSection(render: boolean) {
   actionsSection.style.display = render ? "block" : "none";
 }
 
-
 function renderSearchSection(render: boolean) {
   navigation.style.display = render ? "block" : "none";
 }
 
-function renderPlaylistSection (render: boolean) {
+function renderPlaylistSection(render: boolean) {
   playlistsSection.style.display = render ? "block" : "none";
 }
 
@@ -251,9 +248,9 @@ function clearDOM() {
 }
 
 function closeAside() {
-  if (dropdownMenu?.classList.contains("active")){
+  if (dropdownMenu?.classList.contains("active")) {
     dropdownMenu.classList.remove("active");
-  };
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

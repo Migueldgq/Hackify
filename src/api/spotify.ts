@@ -105,4 +105,31 @@ export async function getPlaylistsCategory(
   return data;
 }
 
+export async function getTrack(
+  token: string,
+  trackId: string
+): Promise<TrackIdRequest> {
+  const result = await fetch(`${api}/v1/tracks/${trackId}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await result.json();
+  return data;
+}
+
+export async function getSearchTrack(
+  token: string,
+  argument: string
+): Promise<TrackSearchRequest> {
+  const result = await fetch(
+    `${api}/v1/search?q=${argument}&type=tracks&limit=50`,
+    {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+  const data = await result.json();
+  return data;
+}
+
 // TODO agregar nuevas funciones para obtener playlists, canciones, etc

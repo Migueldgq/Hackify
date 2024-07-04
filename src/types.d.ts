@@ -53,3 +53,33 @@ type Category = {
 type Icons = {
   url: string;
 };
+
+type TrackIdRequest = {
+  album: {
+    images: [{ url: string }];
+    genres: string[];
+  };
+  artists: [name: string];
+  name: string;
+  duration_ms: number;
+};
+
+type TrackSearchRequest = {
+  tracks: {
+    items: [
+      {
+        album: {
+          images: [
+            {
+              url: string;
+            }
+          ];
+          name: string;
+        };
+        artists: [name: string];
+      }
+    ];
+    duration_ms: number;
+    name: string;
+  };
+};
