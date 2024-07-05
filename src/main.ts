@@ -374,8 +374,6 @@ function renderSearchSection(render: boolean) {
   navigation.style.display = render ? "block" : "none";
 }
 
-function playFromPlaylistTrack(trackURI: string) {}
-
 function clearDOM() {
   navigation.style.display = "none";
   actionsSection.style.display = "none";
