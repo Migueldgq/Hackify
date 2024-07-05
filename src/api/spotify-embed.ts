@@ -9,10 +9,11 @@ export function initPlayer(el: HTMLElement): void {
       // width: 200,
       // height: 400,
       // uri: 'spotify:track:1NCuYqMc8hKMb4cpNTcJbD'
+      backgroundColor: "black",
+      theme: "dark",
     };
     let callback = (EmbedController_: any) => {
       EmbedController = EmbedController_;
-
     };
     IFrameAPI.createController(el, options, callback);
   };

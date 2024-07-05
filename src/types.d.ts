@@ -25,11 +25,12 @@ type TokenResponse = {
   refresh_token: string;
 };
 
-type Playlist = {
+type PlaylistDetails = {
   name: string;
-  id: string;
   images: { url: string }[];
-  owner: { display_name: string };
+  tracks: {
+    items: PlaylistSong[];
+  };
 };
 
 type PlaylistRequest = {

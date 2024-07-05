@@ -14,12 +14,21 @@
 }
 
 /* hack, intencionalmente oculto, con display none no funciona */
-iframe {
+/* iframe {
   top: 0;
   width: 0;
   height: 0;
   position: absolute;
   overflow: hidden;
+} */
+
+iframe {
+  /* background-color: red !important; */
+  bottom: 67px;
+  width: 100%;
+  height: 80px;
+  /* overflow: hidden; */
+  position: fixed;
 }
 
 :root {
@@ -46,7 +55,7 @@ body {
 }
 
 header {
-  height: 9vh;
+  height: 12vh;
   display: flex;
   position: fixed;
   background-color: inherit;
@@ -230,11 +239,7 @@ ul > li {
   background-color: #eaff00;
   display: none;
 }
-display: flex;
-position: fixed;
-background-color: gray;
-width: 100%;
-justify-content: center;
+
 .toggle-aside-option.active {
   display: flex;
 }
@@ -263,6 +268,33 @@ justify-content: center;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
+}
+
+#song {
+  padding-bottom: 160px;
+}
+
+#song-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero-image {
+  height: 12rem;
+  box-shadow: 0px 9px 5px 0px rgba(168, 168, 168, 0.123);
+}
+
+.hero-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 1rem;
+}
+
+#hero-play {
+  height: 2rem;
 }
 
 #app {
