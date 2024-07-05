@@ -270,6 +270,10 @@ ul > li {
   gap: 0.2rem;
 }
 
+#song {
+  padding-bottom: 160px;
+}
+
 #song-hero {
   display: flex;
   flex-direction: column;
