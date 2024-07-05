@@ -30,6 +30,10 @@ const myfavasidebutton = document.getElementById("myfavasidebutton");
 const songUl = document.getElementById("song");
 const playlistsUl = document.getElementById("playlists");
 const hero = document.getElementById("song-hero");
+const categoriesUl = document.getElementById("categorieslist");
+const categoriesplaylistUl = document.getElementById("categories-playlists");
+const categoriesongUl = document.getElementById("categories-songs");
+const homediv = document.getElementById("homediv");
 
 async function init() {
   let profile: UserProfile | undefined;
@@ -75,7 +79,11 @@ function renderPrivateSection(isLogged: boolean, profile?: UserProfile): void {
     !myfavasidebutton ||
     !songUl ||
     !playlistsUl ||
-    !hero
+    !hero ||
+    !categoriesUl ||
+    !categoriesplaylistUl ||
+    !categoriesongUl ||
+    !homediv
   ) {
     return;
   }
@@ -88,7 +96,17 @@ function renderPrivateSection(isLogged: boolean, profile?: UserProfile): void {
   homebutton.addEventListener("click", () => {
     closeAside();
     clearDOM();
-    renderActionsSection(isStillLogged());
+
+    categoriesUl.style.display = "none";
+    categoriesongUl.style.display = "none";
+    categoriesplaylistUl.style.display = "none";
+
+    displayCategories();
+
+    homediv.style.display = "flex";
+
+    categoriesUl.style.display = "flex";
+
     headingtext.innerHTML = `<h1>Home</h1>`;
   });
 
@@ -322,14 +340,18 @@ async function displayCategories() {
   }
   try {
     const categories = await getCategories(token);
-    const categoryList = document.getElementById("categoryList");
-    if (!categoryList) {
-      throw new Error("Category list element not found");
-    }
+    const categoryList = document.getElementById("categorieslist");
+
+    if (!categoryList) return;
+
+    console.log(categories);
 
     const categoryItems = categories.categories.items.map((category) => {
       const li = document.createElement("li");
-      li.textContent = category.name;
+
+      const image = category.icons[0].url;
+
+      li.innerHTML = `<img src="${image}" class="category-image"><p class="category-name">${category.name}</p>`;
       li.setAttribute("data-id", category.id);
       li.addEventListener("click", async function () {
         const token = localStorage.getItem("accessToken");
@@ -345,10 +367,67 @@ async function displayCategories() {
     });
 
     categoryList.append(...categoryItems);
+
+    Array.from(categoriesUl.getElementsByTagName("li")).forEach((li) => {
+      li.addEventListener("click", async function () {
+        const token = localStorage.getItem("accessToken");
+        const categoryId = this.getAttribute("data-id");
+        // const playlistName =
+        //   this.querySelector(".playlist-info p")?.textContent;
+        // const playlistImage = (
+        //   this.querySelector(".playlist-image") as HTMLImageElement
+        // )?.src;
+        /* Se que esto es un "hack" y no es la mejor forma de hacerlo pero el coco no me da pa más ahora mismo */
+
+        // const playlistURIInput = this.querySelector(
+        //   "input[name=playlistURI]"
+        // ) as HTMLInputElement;
+        // const playlistURI = playlistURIInput?.value;
+
+        // if (!playlistURI) return;
+
+        console.log("Click en playlist", categoryId);
+
+        if (categoryId && token) {
+          try {
+            // Obtener los detalles de la playlist y luego los tracks
+            const categoriePlaylistDetails = await getPlaylist(
+              token,
+              categoryId
+            );
+            // Ocultar la sección de playlists
+
+            if (!playlistsUl) return;
+            playlistsUl.style.display = "none";
+
+            if (!hero) return;
+
+            hero.style.display = "flex";
+
+            console.log(categoriePlaylistDetails);
+
+            // Renderizar los tracks de la playlist con el nombre de la playlist
+            renderPlaylistsTracks(
+              playlistDetails,
+              playlistName || "Playlist",
+              playlistImage || "Playlist Img",
+              playlistURI || "Playlist URI"
+            );
+          } catch (error) {
+            console.error("Error fetching playlist details:", error);
+          }
+        } else {
+          console.error("Token or Playlist ID is null");
+        }
+      });
+    });
   } catch (error) {
     console.error("Error fetching categories:", error);
   }
 }
+
+function renderPlaylistCategories() {}
+
 document.addEventListener("DOMContentLoaded", () => {
   const privateSection = document.getElementById("privateSection");
   if (privateSection) {

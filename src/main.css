@@ -9,7 +9,8 @@
 #menuSection,
 #profileSection,
 #playlistsSection,
-#actionsSection {
+#actionsSection,
+#homediv {
   display: none;
 }
 
@@ -244,7 +245,8 @@ ul > li {
   display: flex;
 }
 
-.playlist-image {
+.playlist-image,
+.category-image {
   height: 5rem;
 }
 
