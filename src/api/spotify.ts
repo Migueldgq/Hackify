@@ -63,7 +63,7 @@ export async function getMyPlaylists(token: string): Promise<PlaylistRequest> {
 
   const data = await result.json();
 
-  console.log(data);
+  //console.log(data);
 
   return data;
 }
@@ -79,7 +79,7 @@ export async function getPlaylist(
   const data = await result.json();
   const tracks = data.tracks.items;
 
-  console.log(tracks);
+  //console.log(tracks);
 
   return tracks;
 }

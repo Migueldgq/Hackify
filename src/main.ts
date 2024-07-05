@@ -29,6 +29,7 @@ const profileasidebutton = document.getElementById("profileasidebutton");
 const myfavasidebutton = document.getElementById("myfavasidebutton");
 const songUl = document.getElementById("song");
 const playlistsUl = document.getElementById("playlists");
+const hero = document.getElementById("song-hero");
 
 async function init() {
   let profile: UserProfile | undefined;
@@ -73,7 +74,8 @@ function renderPrivateSection(isLogged: boolean, profile?: UserProfile): void {
     !profileasidebutton ||
     !myfavasidebutton ||
     !songUl ||
-    !playlistsUl
+    !playlistsUl ||
+    !hero
   ) {
     return;
   }
@@ -105,8 +107,13 @@ function renderPrivateSection(isLogged: boolean, profile?: UserProfile): void {
 
     songUl.style.display = "none";
     playlistsUl.style.display = "none";
+    hero.style.display = "none";
 
     playlistsUl.style.display = "flex";
+
+    if (!headingtext) return;
+
+    headingtext.style.display = "flex";
 
     headingtext.innerHTML = `<h1>Mis playlists</h1>`;
 
@@ -194,6 +201,7 @@ function renderPlaylists(playlists: PlaylistRequest) {
       <div class="playlist-info">
       <p>${playlist.name}</p>
       <p>Playlist • ${playlist.owner.display_name}</p>
+      <input type="hidden" name="playlistURI" value="${playlist.uri}"></input>
       </div>
       </li>`;
     })
@@ -204,6 +212,17 @@ function renderPlaylists(playlists: PlaylistRequest) {
       const token = localStorage.getItem("accessToken");
       const playlistId = this.getAttribute("data-id");
       const playlistName = this.querySelector(".playlist-info p")?.textContent;
+      const playlistImage = (
+        this.querySelector(".playlist-image") as HTMLImageElement
+      )?.src;
+      /* Se que esto es un "hack" y no es la mejor forma de hacerlo pero el coco no me da pa más ahora mismo */
+
+      const playlistURIInput = this.querySelector(
+        "input[name=playlistURI]"
+      ) as HTMLInputElement;
+      const playlistURI = playlistURIInput?.value;
+
+      if (!playlistURI) return;
 
       console.log("Click en playlist", playlistId);
 
@@ -216,10 +235,19 @@ function renderPlaylists(playlists: PlaylistRequest) {
           if (!playlistsUl) return;
           playlistsUl.style.display = "none";
 
+          if (!hero) return;
+
+          hero.style.display = "flex";
+
           console.log(playlistDetails);
 
           // Renderizar los tracks de la playlist con el nombre de la playlist
-          renderPlaylistsTracks(playlistDetails, playlistName || "Playlist");
+          renderPlaylistsTracks(
+            playlistDetails,
+            playlistName || "Playlist",
+            playlistImage || "Playlist Img",
+            playlistURI || "Playlist URI"
+          );
         } catch (error) {
           console.error("Error fetching playlist details:", error);
         }
@@ -230,19 +258,48 @@ function renderPlaylists(playlists: PlaylistRequest) {
   });
 }
 
-function renderPlaylistsTracks(songs: PlaylistSong, playlistName: string) {
+function renderPlaylistsTracks(
+  songs: PlaylistSong,
+  playlistName: string,
+  playlistImage: string,
+  playlistURI: string
+) {
   const songSection = document.getElementById("song");
   if (!songSection) {
     throw new Error("Element not found");
   }
 
-  // Update the heading text with the playlist name
+  const hero = document.getElementById("song-hero");
+  if (!hero) return;
+
   const headingtext = document.getElementById("heading-text");
-  if (headingtext) {
-    headingtext.innerHTML = `<h1>${playlistName}</h1>`;
+  if (!headingtext) return;
+
+  headingtext.style.display = "none";
+  if (hero) {
+    hero.innerHTML = `
+    <img class="hero-image" src="${playlistImage}">
+    
+
+    <div class="hero-info">
+      <h1 class="hero-name">${playlistName}</h1>
+      <img id="hero-play" src="play-circle.svg">
+    </div>
+    
+    
+    
+    `;
   }
   if (!songUl) return;
   songUl.style.display = "flex";
+
+  document.getElementById("hero-play")!.addEventListener("click", () => {
+    playTrack(playlistURI);
+    console.log("a");
+  });
+  document.getElementById("hero-play")!.addEventListener("click", () => {
+    togglePlay();
+  });
 
   songSection.innerHTML = songs
     .map((song) => {
@@ -316,6 +373,8 @@ function renderActionsSection(render: boolean) {
 function renderSearchSection(render: boolean) {
   navigation.style.display = render ? "block" : "none";
 }
+
+function playFromPlaylistTrack(trackURI: string) {}
 
 function clearDOM() {
   navigation.style.display = "none";
