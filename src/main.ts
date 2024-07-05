@@ -8,6 +8,7 @@ import {
   getPlaylist,
   getCategories,
   getPlaylistsCategory,
+  getUserTracks,
 } from "./api";
 import { isStillLogged } from "./tokenRefresh";
 
@@ -23,7 +24,12 @@ const searchbutton = document.getElementById("searchbutton");
 const playlistbutton = document.getElementById("playlistbutton");
 const headingtext = document.getElementById("heading-text");
 const footer = document.getElementById("footer");
+const toggleButton = document.getElementById("menubutton");
 const dropdownMenu = document.querySelector(".dropdown-menu");
+const profileasidebutton = document.getElementById("profileasidebutton");
+const myfavasidebutton = document.getElementById("myfavasidebutton");
+const songUl = document.getElementById("song");
+const playlistsUl = document.getElementById("playlists");
 
 async function init() {
   let profile: UserProfile | undefined;
@@ -58,53 +64,78 @@ function initPrivateSection(profile?: UserProfile): void {
 
 // }
 
-function renderPrivateSection(isLogged: boolean) {
+function renderPrivateSection(isLogged: boolean, profile?: UserProfile): void {
   if (
     !homebutton ||
     !searchbutton ||
     !playlistbutton ||
     !headingtext ||
-    !footer
-  )
+    !footer ||
+    !profileasidebutton ||
+    !myfavasidebutton ||
+    !songUl ||
+    !playlistsUl
+  ) {
     return;
+  }
 
+  // Mostrar u ocultar secciones según el estado de inicio de sesión
   privateSection.style.display = isLogged ? "block" : "none";
   footer.style.display = isLogged ? "flex" : "none";
 
+  // Manejar el botón Home
   homebutton.addEventListener("click", () => {
     closeAside();
-
     clearDOM();
-
     renderActionsSection(isStillLogged());
-
-    headingtext.innerHTML = `
-    <h1>Home</h1>
-    `;
+    headingtext.innerHTML = `<h1>Home</h1>`;
   });
 
+  // Manejar el botón Search
   searchbutton.addEventListener("click", () => {
     closeAside();
-
     clearDOM();
-
     renderSearchSection(isStillLogged());
-
-    headingtext.innerHTML = `
-    <h1>Search</h1>
-    `;
+    headingtext.innerHTML = `<h1>Search</h1>`;
   });
 
+  // Manejar el botón Playlists
   playlistbutton.addEventListener("click", () => {
     closeAside();
+    clearDOM(); // Limpiar sección de canciones
 
+    songUl.style.display = "none";
+    playlistsUl.style.display = "none";
+
+    playlistsUl.style.display = "flex";
+
+    headingtext.innerHTML = `<h1>Mis playlists</h1>`;
+
+    getMyPlaylists(localStorage.getItem("accessToken")!).then(
+      (playlists: PlaylistRequest): void => {
+        renderPlaylistsSection(!!profile);
+        renderPlaylists(playlists);
+      }
+    );
+  });
+
+  // Manejar el botón Profile
+  profileasidebutton.addEventListener("click", () => {
+    closeAside();
     clearDOM();
+    renderProfileSection(!!profile);
+    if (profile) {
+      renderProfileData(profile);
+    }
+    headingtext.innerHTML = `<h1>Profile</h1>`;
+  });
 
-    renderPlaylistSection(isStillLogged());
-
-    headingtext.innerHTML = `
-    <h1>Mis playlists</h1>
-    `;
+  // Manejar el botón Mis favoritos
+  myfavasidebutton.addEventListener("click", async () => {
+    closeAside();
+    clearDOM();
+    headingtext.innerHTML = `<h1>Mis favoritos</h1>`;
+    await displayUserTracks();
   });
 }
 
@@ -153,28 +184,79 @@ function renderPlaylistsSection(render: boolean) {
   playlistsSection.style.display = render ? "none" : "block";
 }
 function renderPlaylists(playlists: PlaylistRequest) {
-  const playlist = document.getElementById("playlists");
-  if (!playlist) {
+  const playlistSection = document.getElementById("playlists");
+  if (!playlistSection) {
     throw new Error("Element not found");
   }
-  playlist.innerHTML = playlists.items
+  playlistSection.innerHTML = playlists.items
     .map((playlist) => {
-      return `<li data-id="${playlist.id}">${playlist.name}</li>`;
+      return `<li data-id="${playlist.id}" class="playlist-card">
+      
+      <img class="playlist-image" src="${playlist.images[0].url}">
+      <div class="playlist-info">
+      <p>${playlist.name}</p>
+      <p>Playlist • ${playlist.owner.display_name}</p>
+      </div>
+      </li>`;
     })
     .join("");
 
-  Array.from(playlist.getElementsByTagName("li")).forEach((li) => {
+  Array.from(playlistSection.getElementsByTagName("li")).forEach((li) => {
     li.addEventListener("click", async function () {
       const token = localStorage.getItem("accessToken");
-      console.log(token);
       const playlistId = this.getAttribute("data-id");
+      const playlistName = this.querySelector(".playlist-info p")?.textContent;
+
+      console.log("Click en playlist", playlistId);
+
       if (playlistId && token) {
-        await getPlaylist(token, playlistId);
+        try {
+          // Obtener los detalles de la playlist y luego los tracks
+          const playlistDetails = await getPlaylist(token, playlistId);
+          // Ocultar la sección de playlists
+
+          if (!playlistsUl) return;
+          playlistsUl.style.display = "none";
+
+          console.log(playlistDetails);
+
+          // Renderizar los tracks de la playlist con el nombre de la playlist
+          renderPlaylistsTracks(playlistDetails, playlistName || "Playlist");
+        } catch (error) {
+          console.error("Error fetching playlist details:", error);
+        }
       } else {
         console.error("Token or Playlist ID is null");
       }
     });
   });
+}
+
+function renderPlaylistsTracks(songs: PlaylistSong, playlistName: string) {
+  const songSection = document.getElementById("song");
+  if (!songSection) {
+    throw new Error("Element not found");
+  }
+
+  // Update the heading text with the playlist name
+  const headingtext = document.getElementById("heading-text");
+  if (headingtext) {
+    headingtext.innerHTML = `<h1>${playlistName}</h1>`;
+  }
+  if (!songUl) return;
+  songUl.style.display = "flex";
+
+  songSection.innerHTML = songs
+    .map((song) => {
+      return `<li class="song-card">
+      <img class="song-image" src="${song.track.album.images[0].url}">
+      <div class="song-info">
+      <p class="song-name"s>${song.track.name}</p>
+      <p class="song-artist">${song.track.artists[0].name}</p>
+      </div>
+      </li>`;
+    })
+    .join("");
 }
 
 async function displayCategories() {
@@ -198,6 +280,7 @@ async function displayCategories() {
         const token = localStorage.getItem("accessToken");
         const categoryId = this.getAttribute("data-id");
         if (categoryId && token) {
+          console.log(token);
           await getPlaylistsCategory(token, categoryId);
         } else {
           console.error("Token or Playlist ID is null");
@@ -236,27 +319,27 @@ function renderSearchSection(render: boolean) {
   navigation.style.display = render ? "block" : "none";
 }
 
-function renderPlaylistSection(render: boolean) {
-  playlistsSection.style.display = render ? "block" : "none";
-}
-
 function clearDOM() {
   navigation.style.display = "none";
   actionsSection.style.display = "none";
-  playlistsSection.style.display = "none";
   profileSection.style.display = "none";
+  playlistsSection.style.display = "none";
 }
 
 function closeAside() {
   if (dropdownMenu?.classList.contains("active")) {
     dropdownMenu.classList.remove("active");
   }
+
+  if (!dropdownMenu?.classList.contains("active")) {
+    document
+      .querySelectorAll(".toggle-aside-option")
+      .forEach((el) => el.classList.remove("active"));
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const toggleButton = document.getElementById("menubutton");
   const asideOptions = document.querySelectorAll(".aside-options");
-  const dropdownMenu = document.querySelector(".dropdown-menu");
 
   if (toggleButton && dropdownMenu) {
     toggleButton.addEventListener("click", () => {
@@ -287,4 +370,39 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+async function displayUserTracks() {
+  const token = localStorage.getItem("accessToken");
+  if (!token) {
+    console.error("No token found");
+    return;
+  }
+
+  try {
+    const userTracks = await getUserTracks(token);
+
+    // Crear el contenedor ul donde se mostrarán las canciones
+    const tracksList = document.createElement("ul");
+    tracksList.id = "tracksList"; // Asignamos un id para referencia futura
+
+    userTracks.forEach((track: any) => {
+      const trackItem = document.createElement("li");
+      const trackName = document.createElement("span");
+      trackName.textContent = track.track.name; // Asignar el nombre de la canción
+      const trackImage = document.createElement("img");
+      trackImage.src = track.track.album.images[0].url; // Asignar la imagen de la canción
+      trackImage.alt = track.track.name;
+      trackImage.style.width = "50px";
+
+      trackItem.appendChild(trackImage);
+      trackItem.appendChild(trackName);
+      tracksList.appendChild(trackItem);
+    });
+    const headingText = document.getElementById("heading-text");
+    if (headingText) {
+      headingText.appendChild(tracksList);
+    }
+  } catch (error) {
+    console.error("Error fetching user tracks:", error);
+  }
+}
 document.addEventListener("DOMContentLoaded", init);

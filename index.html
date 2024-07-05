@@ -38,9 +38,9 @@
               <div class="dropdown-elements-container">
                 <img src="Logo.svg" class="dropdown-logo" alt="" />
                 <ul>
-                  <li>
+                  <li id="myfavasidebutton">
                     <div class="toggle-aside-option"></div>
-                    <a href="#" class="aside-options">
+                    <div class="aside-options">
                       <div class="aside-icons">
                         <i  class="fi fi-rr-heart"></i>
                         My favorites
@@ -48,30 +48,19 @@
                       <div class="aside-arrow">
                         <img src="chevronlefticon.svg" alt="" />
                       </div>
-                    </a>
+                    </div>
                   </li>
-                  <li>
+                  <li id="profileasidebutton">
                     <div class="toggle-aside-option"></div>
-                    <a href="#" class="aside-options">
+                    <div class="aside-options">
                       <div class="aside-icons">
                         <img src="personmusic.svg" alt="" />
-                        Home
+                        Profile
                       </div>
                       <div class="aside-arrow">
                         <img src="chevronlefticon.svg" alt="" />
                       </div>
-                    </a>
-                  </li>
-                  <li>
-                    <div class="toggle-aside-option"></div>
-                    <a href="#" class="aside-options">
-                      <div class="aside-icons">
-                        <img src="playlists.svg" alt="" />
-                        Playlists
-                      </div>
-                      <div class="aside-arrow">
-                        <img src="chevronlefticon.svg" alt="" />
-                      </div>
+                    </div>
                     </a>
                   </li>
                   <li>
@@ -117,6 +106,9 @@
               </ul>
             </section>
             <section id="playlistsSection">
+                <div id="song-hero"></div>
+                <ul id="song"></ul>
+              
               <ul id="playlists"></ul>
             </section>
             <section id="actionsSection">
@@ -125,6 +117,9 @@
             </section>
             <section id="spotifyEmbedSection">
               <div id="embed-iframe"></div>
+            </section>
+            <section id="favoritesSection">
+              <ul id="tracksList"></ul>
             </section>
           </section>
         </div>

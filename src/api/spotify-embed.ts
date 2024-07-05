@@ -12,7 +12,6 @@ export function initPlayer(el: HTMLElement): void {
     };
     let callback = (EmbedController_: any) => {
       EmbedController = EmbedController_;
-
     };
     IFrameAPI.createController(el, options, callback);
   };

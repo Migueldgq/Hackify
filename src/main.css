@@ -302,27 +302,25 @@ li button#logoutButton {
 	min-height: 10vh;
 	background-color: rgb(88, 88, 88);
 	box-sizing: border-box;
-}
+} */
 
 section#spotifyEmbedSection {
-	flex-grow: 1;
-	max-width: 70%;
-	height: 100%;
-	display: flex;
-	align-items: center;
-	overflow: hidden;
-	position: relative;
+  max-width: 70%;
+  height: 100%;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
 }
 
 #embed-iframe {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
 }
-
+/*
 section#buttonContainer {
 	display: flex;
 	justify-content: flex-end;
