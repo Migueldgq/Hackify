@@ -280,7 +280,6 @@ async function displayCategories() {
         const token = localStorage.getItem("accessToken");
         const categoryId = this.getAttribute("data-id");
         if (categoryId && token) {
-          console.log(token);
           await getPlaylistsCategory(token, categoryId);
         } else {
           console.error("Token or Playlist ID is null");
@@ -372,6 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 async function displayUserTracks() {
   const token = localStorage.getItem("accessToken");
+  console.log(token);
   if (!token) {
     console.error("No token found");
     return;
@@ -380,16 +380,15 @@ async function displayUserTracks() {
   try {
     const userTracks = await getUserTracks(token);
 
-    // Crear el contenedor ul donde se mostrarán las canciones
     const tracksList = document.createElement("ul");
-    tracksList.id = "tracksList"; // Asignamos un id para referencia futura
+    tracksList.id = "tracksList";
 
     userTracks.forEach((track: any) => {
       const trackItem = document.createElement("li");
       const trackName = document.createElement("span");
-      trackName.textContent = track.track.name; // Asignar el nombre de la canción
+      trackName.textContent = track.track.name;
       const trackImage = document.createElement("img");
-      trackImage.src = track.track.album.images[0].url; // Asignar la imagen de la canción
+      trackImage.src = track.track.album.images[0].url;
       trackImage.alt = track.track.name;
       trackImage.style.width = "50px";
 
